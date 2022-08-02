@@ -1,0 +1,8 @@
+node_modules
+.vscode
+*.html
+*js-prebuilt.js
+dist
+
+yarn.lock
+package-lock.json

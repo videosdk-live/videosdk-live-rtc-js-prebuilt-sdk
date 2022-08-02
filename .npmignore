@@ -1,0 +1,6 @@
+*.html
+/src
+/dist/index.js.map
+/dist/index.modern.js
+/dist/index.modern.js.map
+*.prebuilt.js

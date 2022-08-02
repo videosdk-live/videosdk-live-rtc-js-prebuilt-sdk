@@ -1,0 +1,28 @@
+{
+  "name": "@videosdk.live/rtc-js-prebuilt",
+  "version": "0.3.13",
+  "main": "dist/index.js",
+  "module": "dist/index.modern.js",
+  "source": "src/index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "microbundle-crl --no-compress  --format modern,cjs",
+    "dev": "microbundle-crl --no-compress --format modern,cjs watch"
+  },
+  "keywords": [
+    "prebuilt",
+    "react",
+    "video-sdk",
+    "javascript",
+    "realtime",
+    "webrtc",
+    "live-streaming",
+    "communication"
+  ],
+  "author": "videosdk.live",
+  "homepage": "https://docs.videosdk.live/docs/realtime-communication/sdk-reference/prebuilt-sdk-js/setup",
+  "devDependencies": {
+    "microbundle-crl": "^0.13.11"
+  },
+  "dependencies": {}
+}
