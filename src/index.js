@@ -145,6 +145,7 @@ export class VideoSDKMeeting {
       isRecorder,
 
       maintainVideoAspectRatio,
+      networkBarEnabled,
 
       participantId,
       meetingLayoutTopic,
@@ -472,6 +473,15 @@ export class VideoSDKMeeting {
         value:
           typeof maintainVideoAspectRatio === "boolean"
             ? maintainVideoAspectRatio
+              ? "true"
+              : "false"
+            : "true",
+      },
+      {
+        key: "networkBarEnabled",
+        value:
+          typeof networkBarEnabled === "boolean"
+            ? networkBarEnabled
               ? "true"
               : "false"
             : "true",
