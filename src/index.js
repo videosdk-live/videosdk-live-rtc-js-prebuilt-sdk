@@ -114,6 +114,7 @@ export class VideoSDKMeeting {
       webcamEnabled,
       participantCanToggleSelfWebcam,
       participantCanToggleSelfMic,
+      participantTabPanelEnabled,
 
       participantCanLeave,
       chatEnabled,
@@ -192,6 +193,7 @@ export class VideoSDKMeeting {
       pin: canPin,
       changeLayout: canChangeLayout,
       canCreatePoll: canCreatePoll,
+      canToggleParticipantTab: canToggleParticipantTab,
     } = initPermissions;
 
     if (askJoin) {
@@ -339,6 +341,15 @@ export class VideoSDKMeeting {
         key: "participantCanToggleOtherMic",
         value: participantCanToggleOtherMic ? "true" : "false",
       },
+      {
+        key: "participantTabPanelEnabled",
+        value:
+          typeof participantTabPanelEnabled === "boolean"
+            ? participantTabPanelEnabled
+              ? "true"
+              : "false"
+            : "true",
+      },
 
       {
         key: "partcipantCanToogleOtherScreenShare",
@@ -367,6 +378,15 @@ export class VideoSDKMeeting {
       },
       { key: "canPin", value: canPin ? "true" : "false" },
       { key: "canCreatePoll", value: canCreatePoll ? "true" : "false" },
+      {
+        key: "canToggleParticipantTab",
+        value:
+          typeof canToggleParticipantTab === "boolean"
+            ? canToggleParticipantTab
+              ? "true"
+              : "false"
+            : "true",
+      },
       { key: "layoutType", value: layoutType },
       { key: "mode", value: mode },
       {
@@ -556,7 +576,7 @@ export class VideoSDKMeeting {
 
     const embedBaseUrl = _embedBaseUrl
       ? _embedBaseUrl
-      : // : "http://localhost:3000/rtc-js-prebuilt/pre-0.3.10/";
+      : // : "http://localhost:3000/rtc-js-prebuilt/0.3.15/";
 
         "https://embed.videosdk.live/rtc-js-prebuilt/0.3.15/";
 
