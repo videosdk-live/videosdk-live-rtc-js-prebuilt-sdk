@@ -584,9 +584,9 @@ export class VideoSDKMeeting {
 
     const embedBaseUrl = _embedBaseUrl
       ? _embedBaseUrl
-      : // : "http://localhost:3000/rtc-js-prebuilt/0.3.15/";
+      : // : "http://localhost:3000/rtc-js-prebuilt/0.3.16/";
 
-        "https://embed.videosdk.live/rtc-js-prebuilt/0.3.15/";
+        "https://embed.videosdk.live/rtc-js-prebuilt/0.3.16/";
 
     const prebuiltSrc = `${embedBaseUrl}/?${prebuiltSrcQueryParameters}`;
 
