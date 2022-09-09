@@ -283,7 +283,7 @@ export class VideoSDKMeeting {
       { key: "meetingId", value: meetingId || "" },
       { key: "redirectOnLeave", value: redirectOnLeave || "" },
       { key: "chatEnabled", value: chatEnabled ? "true" : "false" },
-      { key: "theme", value: theme || "default" },
+      { key: "theme", value: theme || "DEFAULT" },
       {
         key: "screenShareEnabled",
         value: screenShareEnabled ? "true" : "false",
