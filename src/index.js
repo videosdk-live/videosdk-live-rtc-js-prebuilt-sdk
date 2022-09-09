@@ -119,9 +119,11 @@ export class VideoSDKMeeting {
       participantCanLeave,
       chatEnabled,
       screenShareEnabled,
+      // interactionEnabled,
       pollEnabled,
       whiteboardEnabled,
       raiseHandEnabled,
+      theme,
 
       branding,
 
@@ -281,11 +283,24 @@ export class VideoSDKMeeting {
       { key: "meetingId", value: meetingId || "" },
       { key: "redirectOnLeave", value: redirectOnLeave || "" },
       { key: "chatEnabled", value: chatEnabled ? "true" : "false" },
+      { key: "theme", value: theme || "default" },
       {
         key: "screenShareEnabled",
         value: screenShareEnabled ? "true" : "false",
       },
-      { key: "pollEnabled", value: pollEnabled ? "true" : "false" },
+      // {
+      //   key: "interactionEnabled",
+      //   value: interactionEnabled ? "true" : "false",
+      // },
+      {
+        key: "pollEnabled",
+        value:
+          typeof pollEnabled === "boolean"
+            ? pollEnabled
+              ? "true"
+              : "false"
+            : "true",
+      },
       { key: "whiteboardEnabled", value: whiteboardEnabled ? "true" : "false" },
       {
         key: "participantCanToggleSelfWebcam",
@@ -584,9 +599,9 @@ export class VideoSDKMeeting {
 
     const embedBaseUrl = _embedBaseUrl
       ? _embedBaseUrl
-      : // : "http://localhost:3000/rtc-js-prebuilt/0.3.16/";
+      : // : "http://localhost:3000/rtc-js-prebuilt/0.3.21";
 
-        "https://embed.videosdk.live/rtc-js-prebuilt/0.3.16/";
+        "https://embed.videosdk.live/rtc-js-prebuilt/0.3.18/";
 
     const prebuiltSrc = `${embedBaseUrl}/?${prebuiltSrcQueryParameters}`;
 
