@@ -211,6 +211,7 @@ export class VideoSDKMeeting {
       enabled: liveStreamEnabled,
       autoStart: autoStartLiveStream,
       outputs: liveStreamOutputs,
+      theme: liveStreamTheme,
     } = livestream;
 
     let { imageUrl: waitingScreenImageUrl, text: waitingScreenText } =
@@ -245,12 +246,14 @@ export class VideoSDKMeeting {
       webhookUrl: recordingWebhookUrl,
       awsDirPath: recordingAWSDirPath,
       autoStart: autoStartRecording,
+      theme: recordingTheme,
     } = recording;
 
     const {
       enabled: hlsEnabled,
       autoStart: autoStartHls,
       playerControlsVisible: hlsPlayerControlsVisible,
+      theme: hlsTheme,
     } = hls;
 
     let {
@@ -319,6 +322,7 @@ export class VideoSDKMeeting {
         key: "autoStartRecording",
         value: autoStartRecording ? "true" : "false",
       },
+      { key: "recordingTheme", value: recordingTheme || "DEFAULT" },
       {
         key: "participantCanToggleRecording",
         value:
@@ -358,6 +362,7 @@ export class VideoSDKMeeting {
         key: "liveStreamOutputs",
         value: JSON.stringify(liveStreamOutputs || []),
       },
+      { key: "liveStreamTheme", value: liveStreamTheme || "DEFAULT" },
       {
         key: "participantCanToggleOtherMic",
         value: participantCanToggleOtherMic ? "true" : "false",
@@ -589,6 +594,7 @@ export class VideoSDKMeeting {
               : "false"
             : "false",
       },
+      { key: "hlsTheme", value: hlsTheme || "DEFAULT" },
       { key: "waitingScreenImageUrl", value: waitingScreenImageUrl || "" },
       { key: "waitingScreenText", value: waitingScreenText || "" },
     ]
