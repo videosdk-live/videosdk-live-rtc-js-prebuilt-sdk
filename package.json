@@ -1,6 +1,6 @@
 {
   "name": "@videosdk.live/rtc-js-prebuilt",
-  "version": "0.3.20",
+  "version": "0.3.21",
   "main": "dist/index.js",
   "module": "dist/index.modern.js",
   "source": "src/index.js",
