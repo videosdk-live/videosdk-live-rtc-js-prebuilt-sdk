@@ -150,6 +150,7 @@ export class VideoSDKMeeting {
       isRecorder,
 
       maintainVideoAspectRatio,
+      maintainLandscapeVideoAspectRatio,
       networkBarEnabled,
 
       participantId,
@@ -524,6 +525,15 @@ export class VideoSDKMeeting {
             : "true",
       },
       {
+        key: "maintainLandscapeVideoAspectRatio",
+        value:
+          typeof maintainLandscapeVideoAspectRatio === "boolean"
+            ? maintainLandscapeVideoAspectRatio
+              ? "true"
+              : "false"
+            : "false",
+      },
+      {
         key: "networkBarEnabled",
         value:
           typeof networkBarEnabled === "boolean"
@@ -605,9 +615,9 @@ export class VideoSDKMeeting {
 
     const embedBaseUrl = _embedBaseUrl
       ? _embedBaseUrl
-      : // : "http://localhost:3000/rtc-js-prebuilt/0.3.24";
+      : //"http://localhost:3000/rtc-js-prebuilt/0.3.21";
 
-        "https://embed.videosdk.live/rtc-js-prebuilt/0.3.21/";
+        "https://embed.videosdk.live/rtc-js-prebuilt/0.3.23/";
 
     const prebuiltSrc = `${embedBaseUrl}/?${prebuiltSrcQueryParameters}`;
 
