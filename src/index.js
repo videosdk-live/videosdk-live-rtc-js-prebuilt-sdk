@@ -186,9 +186,9 @@ export class VideoSDKMeeting {
     if (!hls) hls = {};
     if (!waitingScreen) waitingScreen = {};
     if (!branding) branding = {};
-    if (!videoConfig) cameraConfig = {};
+    if (!videoConfig) videoConfig = {};
     if (!screenShareConfig) screenShareConfig = {};
-    if (!audioConfig) micConfig = {};
+    if (!audioConfig) audioConfig = {};
 
     let {
       askToJoin: askJoin,
@@ -647,7 +647,8 @@ export class VideoSDKMeeting {
 
     const embedBaseUrl = _embedBaseUrl
       ? _embedBaseUrl
-      : "https://embed.videosdk.live/rtc-js-prebuilt/0.3.24/";
+      : "http://localhost:3000/rtc-js-prebuilt/0.3.24";
+    // "https://embed.videosdk.live/rtc-js-prebuilt/0.3.24/";
 
     const prebuiltSrc = `${embedBaseUrl}/?${prebuiltSrcQueryParameters}`;
 
