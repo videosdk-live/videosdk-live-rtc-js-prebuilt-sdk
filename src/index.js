@@ -152,6 +152,7 @@ export class VideoSDKMeeting {
       videoConfig,
       screenShareConfig,
       audioConfig,
+      i18n,
 
       maintainVideoAspectRatio,
       maintainLandscapeVideoAspectRatio,
@@ -189,6 +190,7 @@ export class VideoSDKMeeting {
     if (!videoConfig) videoConfig = {};
     if (!screenShareConfig) screenShareConfig = {};
     if (!audioConfig) audioConfig = {};
+    if (!i18n) i18n = {};
 
     let {
       askToJoin: askJoin,
@@ -281,6 +283,8 @@ export class VideoSDKMeeting {
       optimizationMode: screenShareOptimizationMode,
     } = screenShareConfig;
 
+    let { lang: language } = i18n;
+
     let { quality: micQuality } = audioConfig;
 
     // END VARIABLE INIT
@@ -306,6 +310,7 @@ export class VideoSDKMeeting {
       { key: "redirectOnLeave", value: redirectOnLeave || "" },
       { key: "chatEnabled", value: chatEnabled ? "true" : "false" },
       { key: "theme", value: theme || "DEFAULT" },
+      { key: "language", value: language || "en" },
       {
         key: "screenShareEnabled",
         value: screenShareEnabled ? "true" : "false",
@@ -647,7 +652,7 @@ export class VideoSDKMeeting {
 
     const embedBaseUrl = _embedBaseUrl
       ? _embedBaseUrl
-      : "https://embed.videosdk.live/rtc-js-prebuilt/0.3.25/";
+      : "https://embed.videosdk.live/rtc-js-prebuilt/0.3.26/";
 
     const prebuiltSrc = `${embedBaseUrl}/?${prebuiltSrcQueryParameters}`;
 
