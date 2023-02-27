@@ -276,6 +276,7 @@ export class VideoSDKMeeting {
     let {
       resolution: cameraResolution,
       optimizationMode: cameraOptimizationMode,
+      multiStream: cameraMultiStream,
     } = videoConfig;
 
     let {
@@ -636,6 +637,15 @@ export class VideoSDKMeeting {
         value: cameraOptimizationMode || "motion",
       },
       {
+        key: "cameraMultiStream",
+        value:
+          typeof cameraMultiStream === "boolean"
+            ? cameraMultiStream
+              ? "true"
+              : "false"
+            : "true",
+      },
+      {
         key: "screenShareResolution",
         value: screenShareResolution || "h720p_15fps",
       },
@@ -652,7 +662,7 @@ export class VideoSDKMeeting {
 
     const embedBaseUrl = _embedBaseUrl
       ? _embedBaseUrl
-      : "https://embed.videosdk.live/rtc-js-prebuilt/0.3.26/";
+      : "https://embed.videosdk.live/rtc-js-prebuilt/0.3.29/";
 
     const prebuiltSrc = `${embedBaseUrl}/?${prebuiltSrcQueryParameters}`;
 
