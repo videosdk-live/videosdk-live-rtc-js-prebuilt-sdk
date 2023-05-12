@@ -193,6 +193,7 @@ export class VideoSDKMeeting {
       endMeeting: participantCanEndMeeting,
       drawOnWhiteboard: canDrawOnWhiteboard,
       toggleWhiteboard: canToggleWhiteboard,
+      toggleVirtualBackground: canToggleVirtualBackground,
       toggleRecording: participantCanToggleRecording,
       toggleLivestream: participantCanToggleLivestream,
       toggleHls: participantCanToggleHls,
@@ -444,6 +445,15 @@ export class VideoSDKMeeting {
             : "true",
       },
       {
+        key: "canToggleVirtualBackground",
+        value:
+          typeof canToggleVirtualBackground === "boolean"
+            ? canToggleVirtualBackground
+              ? "true"
+              : "false"
+            : "true",
+      },
+      {
         key: "canRemoveOtherParticipant",
         value:
           typeof canRemoveOtherParticipant === "boolean"
@@ -615,9 +625,7 @@ export class VideoSDKMeeting {
 
     const embedBaseUrl = _embedBaseUrl
       ? _embedBaseUrl
-      : //"http://localhost:3000/rtc-js-prebuilt/0.3.21";
-
-        "https://embed.videosdk.live/rtc-js-prebuilt/0.3.23/";
+      : "https://embed.videosdk.live/rtc-js-prebuilt/0.3.30/";
 
     const prebuiltSrc = `${embedBaseUrl}/?${prebuiltSrcQueryParameters}`;
 
