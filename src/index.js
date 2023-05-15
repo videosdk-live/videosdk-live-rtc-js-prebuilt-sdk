@@ -152,6 +152,7 @@ export class VideoSDKMeeting {
       videoConfig,
       screenShareConfig,
       audioConfig,
+      i18n,
 
       maintainVideoAspectRatio,
       maintainLandscapeVideoAspectRatio,
@@ -189,6 +190,7 @@ export class VideoSDKMeeting {
     if (!videoConfig) videoConfig = {};
     if (!screenShareConfig) screenShareConfig = {};
     if (!audioConfig) audioConfig = {};
+    if (!i18n) i18n = {};
 
     let {
       askToJoin: askJoin,
@@ -275,12 +277,15 @@ export class VideoSDKMeeting {
     let {
       resolution: cameraResolution,
       optimizationMode: cameraOptimizationMode,
+      multiStream: cameraMultiStream,
     } = videoConfig;
 
     let {
       resolution: screenShareResolution,
       optimizationMode: screenShareOptimizationMode,
     } = screenShareConfig;
+
+    let { lang: language } = i18n;
 
     let { quality: micQuality } = audioConfig;
 
@@ -307,6 +312,7 @@ export class VideoSDKMeeting {
       { key: "redirectOnLeave", value: redirectOnLeave || "" },
       { key: "chatEnabled", value: chatEnabled ? "true" : "false" },
       { key: "theme", value: theme || "DEFAULT" },
+      { key: "language", value: language || "en" },
       {
         key: "screenShareEnabled",
         value: screenShareEnabled ? "true" : "false",
@@ -639,6 +645,15 @@ export class VideoSDKMeeting {
       {
         key: "cameraOptimizationMode",
         value: cameraOptimizationMode || "motion",
+      },
+      {
+        key: "cameraMultiStream",
+        value:
+          typeof cameraMultiStream === "boolean"
+            ? cameraMultiStream
+              ? "true"
+              : "false"
+            : "true",
       },
       {
         key: "screenShareResolution",
