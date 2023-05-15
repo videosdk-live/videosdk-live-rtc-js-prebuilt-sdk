@@ -149,6 +149,10 @@ export class VideoSDKMeeting {
 
       isRecorder,
 
+      videoConfig,
+      screenShareConfig,
+      audioConfig,
+
       maintainVideoAspectRatio,
       maintainLandscapeVideoAspectRatio,
       networkBarEnabled,
@@ -182,6 +186,9 @@ export class VideoSDKMeeting {
     if (!hls) hls = {};
     if (!waitingScreen) waitingScreen = {};
     if (!branding) branding = {};
+    if (!videoConfig) videoConfig = {};
+    if (!screenShareConfig) screenShareConfig = {};
+    if (!audioConfig) audioConfig = {};
 
     let {
       askToJoin: askJoin,
@@ -265,6 +272,18 @@ export class VideoSDKMeeting {
       poweredBy,
     } = branding;
 
+    let {
+      resolution: cameraResolution,
+      optimizationMode: cameraOptimizationMode,
+    } = videoConfig;
+
+    let {
+      resolution: screenShareResolution,
+      optimizationMode: screenShareOptimizationMode,
+    } = screenShareConfig;
+
+    let { quality: micQuality } = audioConfig;
+
     // END VARIABLE INIT
 
     if (!token && !apiKey) {
@@ -285,7 +304,6 @@ export class VideoSDKMeeting {
       { key: "preferredProtocol", value: preferredProtocol || "UDP_ONLY" },
 
       { key: "canChangeLayout", value: canChangeLayout ? "true" : "false" },
-      { key: "meetingId", value: meetingId || "" },
       { key: "redirectOnLeave", value: redirectOnLeave || "" },
       { key: "chatEnabled", value: chatEnabled ? "true" : "false" },
       { key: "theme", value: theme || "DEFAULT" },
@@ -617,6 +635,20 @@ export class VideoSDKMeeting {
       { key: "hlsTheme", value: hlsTheme || "DEFAULT" },
       { key: "waitingScreenImageUrl", value: waitingScreenImageUrl || "" },
       { key: "waitingScreenText", value: waitingScreenText || "" },
+      { key: "cameraResolution", value: cameraResolution || "h360p_w640p" },
+      {
+        key: "cameraOptimizationMode",
+        value: cameraOptimizationMode || "motion",
+      },
+      {
+        key: "screenShareResolution",
+        value: screenShareResolution || "h720p_15fps",
+      },
+      {
+        key: "screenShareOptimizationMode",
+        value: screenShareOptimizationMode || "motion",
+      },
+      { key: "micQuality", value: micQuality || "speech_standard" },
     ]
       .map(({ key, value }) => {
         return `${key}=${encodeURIComponent(value)}`;
