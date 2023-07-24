@@ -275,6 +275,7 @@ export class VideoSDKMeeting {
     } = branding;
 
     let {
+      cameraId: cameraId,
       resolution: cameraResolution,
       optimizationMode: cameraOptimizationMode,
       multiStream: cameraMultiStream,
@@ -642,6 +643,7 @@ export class VideoSDKMeeting {
       { key: "waitingScreenImageUrl", value: waitingScreenImageUrl || "" },
       { key: "waitingScreenText", value: waitingScreenText || "" },
       { key: "cameraResolution", value: cameraResolution || "h360p_w640p" },
+      { key: "cameraId", value: cameraId || "" },
       {
         key: "cameraOptimizationMode",
         value: cameraOptimizationMode || "motion",
