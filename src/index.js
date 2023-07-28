@@ -674,7 +674,7 @@ export class VideoSDKMeeting {
 
     const embedBaseUrl = _embedBaseUrl
       ? _embedBaseUrl
-      : "https://embed.videosdk.live/rtc-js-prebuilt/0.3.31/";
+      : "https://embed.videosdk.live/rtc-js-prebuilt/0.3.33/";
 
     const prebuiltSrc = `${embedBaseUrl}/?${prebuiltSrcQueryParameters}`;
 
