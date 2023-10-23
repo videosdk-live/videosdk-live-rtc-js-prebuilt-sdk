@@ -115,6 +115,7 @@ export class VideoSDKMeeting {
       participantCanToggleSelfWebcam,
       participantCanToggleSelfMic,
       participantTabPanelEnabled,
+      moreOptionsEnabled,
 
       participantCanLeave,
       chatEnabled,
@@ -403,6 +404,15 @@ export class VideoSDKMeeting {
               : "false"
             : "true",
       },
+      {
+        key: "moreOptionsEnabled",
+        value:
+          typeof moreOptionsEnabled === "boolean"
+            ? moreOptionsEnabled
+              ? "true"
+              : "false"
+            : "true",
+      },
 
       {
         key: "partcipantCanToogleOtherScreenShare",
@@ -674,7 +684,7 @@ export class VideoSDKMeeting {
 
     const embedBaseUrl = _embedBaseUrl
       ? _embedBaseUrl
-      : "https://embed.videosdk.live/rtc-js-prebuilt/0.3.33/";
+      : "https://embed.videosdk.live/rtc-js-prebuilt/0.3.36/";
 
     const prebuiltSrc = `${embedBaseUrl}/?${prebuiltSrcQueryParameters}`;
 
