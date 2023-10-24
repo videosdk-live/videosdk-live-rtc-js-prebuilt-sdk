@@ -24,5 +24,6 @@
   "devDependencies": {
     "microbundle-crl": "^0.13.11"
   },
+  "types": "./index.d.ts",
   "dependencies": {}
 }
