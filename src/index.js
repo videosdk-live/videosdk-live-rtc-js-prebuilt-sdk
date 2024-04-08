@@ -60,7 +60,14 @@ export class VideoSDKMeeting {
     });
   }
 
-  async fetchToken({ apiKey, askJoin,  participantCanToggleOtherWebcam, participantCanToggleOtherMic, partcipantCanToogleOtherScreenShare, apiBaseUrl }) {
+  async fetchToken({
+    apiKey,
+    askJoin,
+    participantCanToggleOtherWebcam,
+    participantCanToggleOtherMic,
+    partcipantCanToogleOtherScreenShare,
+    apiBaseUrl,
+  }) {
     let BASE_URL = apiBaseUrl || "https://api.videosdk.live";
 
     let urlToken = `${BASE_URL}/v1/prebuilt/token`;
@@ -73,7 +80,11 @@ export class VideoSDKMeeting {
       permissions.push("allow_join");
     }
 
-    if ( participantCanToggleOtherWebcam || participantCanToggleOtherMic || partcipantCanToogleOtherScreenShare) {
+    if (
+      participantCanToggleOtherWebcam ||
+      participantCanToggleOtherMic ||
+      partcipantCanToogleOtherScreenShare
+    ) {
       permissions.push("allow_mod");
     } else {
       permissions.push("allow_join");
@@ -180,6 +191,7 @@ export class VideoSDKMeeting {
       embedBaseUrl: _embedBaseUrl,
       apiBaseUrl,
       mode,
+      metaData,
     } = {},
     myWindow
   ) {
@@ -303,7 +315,16 @@ export class VideoSDKMeeting {
       throw new Error(`Any one of "token" or "apiKey" must be provided.`);
     }
 
-    token = token || (await this.fetchToken({ apiKey, askJoin, participantCanToggleOtherWebcam, participantCanToggleOtherMic, partcipantCanToogleOtherScreenShare, apiBaseUrl }));
+    token =
+      token ||
+      (await this.fetchToken({
+        apiKey,
+        askJoin,
+        participantCanToggleOtherWebcam,
+        participantCanToggleOtherMic,
+        partcipantCanToogleOtherScreenShare,
+        apiBaseUrl,
+      }));
 
     const rawUserAgent = myWindow?.navigator?.userAgent;
 
@@ -682,6 +703,12 @@ export class VideoSDKMeeting {
         value: screenShareOptimizationMode || "motion",
       },
       { key: "micQuality", value: micQuality || "speech_standard" },
+      {
+        key: "metaData",
+        value: JSON.stringify(
+          typeof metaData === "object" ? metaData : {} ?? {}
+        ),
+      },
     ]
       .map(({ key, value }) => {
         return `${key}=${encodeURIComponent(value)}`;
