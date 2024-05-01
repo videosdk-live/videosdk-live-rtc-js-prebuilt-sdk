@@ -60,7 +60,14 @@ export class VideoSDKMeeting {
     });
   }
 
-  async fetchToken({ apiKey, askJoin,  participantCanToggleOtherWebcam, participantCanToggleOtherMic, partcipantCanToogleOtherScreenShare, apiBaseUrl }) {
+  async fetchToken({
+    apiKey,
+    askJoin,
+    participantCanToggleOtherWebcam,
+    participantCanToggleOtherMic,
+    partcipantCanToogleOtherScreenShare,
+    apiBaseUrl,
+  }) {
     let BASE_URL = apiBaseUrl || "https://api.videosdk.live";
 
     let urlToken = `${BASE_URL}/v1/prebuilt/token`;
@@ -73,7 +80,11 @@ export class VideoSDKMeeting {
       permissions.push("allow_join");
     }
 
-    if ( participantCanToggleOtherWebcam || participantCanToggleOtherMic || partcipantCanToogleOtherScreenShare) {
+    if (
+      participantCanToggleOtherWebcam ||
+      participantCanToggleOtherMic ||
+      partcipantCanToogleOtherScreenShare
+    ) {
       permissions.push("allow_mod");
     } else {
       permissions.push("allow_join");
@@ -180,6 +191,9 @@ export class VideoSDKMeeting {
       embedBaseUrl: _embedBaseUrl,
       apiBaseUrl,
       mode,
+
+      // realtime transcription
+      realtimeTranscription,
     } = {},
     myWindow
   ) {
@@ -198,6 +212,7 @@ export class VideoSDKMeeting {
     if (!screenShareConfig) screenShareConfig = {};
     if (!audioConfig) audioConfig = {};
     if (!i18n) i18n = {};
+    if (!realtimeTranscription) realtimeTranscription = {};
 
     let {
       askToJoin: askJoin,
@@ -217,6 +232,9 @@ export class VideoSDKMeeting {
       changeLayout: canChangeLayout,
       canCreatePoll: canCreatePoll,
       canToggleParticipantTab: canToggleParticipantTab,
+
+      // realtime transcription
+      toggleRealtimeTranscription: participantCanToggleRealtimeTranscription,
     } = initPermissions;
 
     if (askJoin) {
@@ -297,13 +315,27 @@ export class VideoSDKMeeting {
 
     let { quality: micQuality } = audioConfig;
 
+    let {
+      enabled: realtimeTranscriptionEnabled,
+      visible: realtimeTranscriptionVisible,
+    } = realtimeTranscription;
+
     // END VARIABLE INIT
 
     if (!token && !apiKey) {
       throw new Error(`Any one of "token" or "apiKey" must be provided.`);
     }
 
-    token = token || (await this.fetchToken({ apiKey, askJoin, participantCanToggleOtherWebcam, participantCanToggleOtherMic, partcipantCanToogleOtherScreenShare, apiBaseUrl }));
+    token =
+      token ||
+      (await this.fetchToken({
+        apiKey,
+        askJoin,
+        participantCanToggleOtherWebcam,
+        participantCanToggleOtherMic,
+        partcipantCanToogleOtherScreenShare,
+        apiBaseUrl,
+      }));
 
     const rawUserAgent = myWindow?.navigator?.userAgent;
 
@@ -682,6 +714,24 @@ export class VideoSDKMeeting {
         value: screenShareOptimizationMode || "motion",
       },
       { key: "micQuality", value: micQuality || "speech_standard" },
+
+      {
+        key: "participantCanToggleRealtimeTranscription",
+        value:
+          typeof participantCanToggleRealtimeTranscription === "boolean"
+            ? participantCanToggleRealtimeTranscription
+              ? "true"
+              : "false"
+            : false,
+      },
+      {
+        key: "realtimeTranscriptionEnabled",
+        value: realtimeTranscriptionEnabled ? "true" : "false",
+      },
+      {
+        key: "realtimeTranscriptionVisible",
+        value: realtimeTranscriptionVisible ? "true" : "false",
+      },
     ]
       .map(({ key, value }) => {
         return `${key}=${encodeURIComponent(value)}`;
@@ -690,7 +740,7 @@ export class VideoSDKMeeting {
 
     const embedBaseUrl = _embedBaseUrl
       ? _embedBaseUrl
-      : "https://embed.videosdk.live/rtc-js-prebuilt/0.3.38/";
+      : "https://embed.videosdk.live/rtc-js-prebuilt/0.3.39/";
 
     const prebuiltSrc = `${embedBaseUrl}/?${prebuiltSrcQueryParameters}`;
 
