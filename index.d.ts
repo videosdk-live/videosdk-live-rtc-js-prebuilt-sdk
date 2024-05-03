@@ -136,6 +136,12 @@ export class VideoSDKMeeting {
    *
    * @param recording.theme - It represents the theme of recording which can be DARK , LIGHT or DEFAULT.
    * ---
+   * @param realtimeTranscription - You can transcript audio & video call during the meeting.
+   *
+   * @param realtimeTranscription.enabled - It enables partcipant to transcript the meeting.
+   *
+   * @param realtimeTranscription.visible - It represents transcription text is visible to participant or not.
+   * ---
    * @param leftScreen - Left screen will be shown when participant left the meeting if redirectOnLeave parameter is not provided while initializing the meeting.
    *
    * @param leftScreen.actionButton - You can customize button on left screen page by passing {href,label}.
@@ -215,6 +221,8 @@ export class VideoSDKMeeting {
    * @param permissions.toggleParticipantMode - It represents whether participant can toggle other participant's mode or not.
    *
    * @param permissions.toggleHLS - If set to true you can toggle Start HLS Button.
+   *
+   * @param permissions.toggleRealtimeTranscription - enables participant to toggle realtime transcription if set to true
    * ---
    *
    */
@@ -280,6 +288,10 @@ export class VideoSDKMeeting {
       awsDirPath: string;
       theme: string;
     };
+    realtimeTranscription: {
+      enabled: boolean;
+      visible: boolean;
+    };
     leftScreen?: {
       actionButton: {
         label: string;
@@ -319,6 +331,7 @@ export class VideoSDKMeeting {
       toggleWhiteboard: boolean;
       toggleVirtualBackground: boolean;
       toggleRecording: boolean;
+      toggleRealtimeTranscription: boolean;
       toggleLivestream: boolean;
       changeLayout: boolean;
     };
