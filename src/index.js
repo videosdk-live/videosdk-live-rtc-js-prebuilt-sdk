@@ -86,8 +86,6 @@ export class VideoSDKMeeting {
       partcipantCanToogleOtherScreenShare
     ) {
       permissions.push("allow_mod");
-    } else {
-      permissions.push("allow_join");
     }
 
     let tokenBody = { apiKey: apiKey };
