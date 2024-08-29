@@ -180,6 +180,7 @@ export class VideoSDKMeeting {
 
       notificationSoundEnabled,
       notificationAlertsEnabled,
+      participantNotificationAlertsEnabled,
       animationsEnabled,
       topbarEnabled,
       hideLocalParticipant,
@@ -555,6 +556,13 @@ export class VideoSDKMeeting {
             ? notificationAlertsEnabled
             : true,
       },
+      {
+        key: "participantNotificationAlertsEnabled",
+        value:
+          typeof participantNotificationAlertsEnabled === "boolean"
+            ? participantNotificationAlertsEnabled
+            : false,
+      },
       { key: "debug", value: typeof debug === "boolean" ? debug : false },
       { key: "participantId", value: participantId || "" },
       { key: "layoutPriority", value: layoutPriority || "" },
@@ -738,7 +746,7 @@ export class VideoSDKMeeting {
 
     const embedBaseUrl = _embedBaseUrl
       ? _embedBaseUrl
-      : "https://embed.videosdk.live/rtc-js-prebuilt/0.3.41/";
+      : "https://embed.videosdk.live/rtc-js-prebuilt/0.3.42/";
 
 
     const prebuiltSrc = `${embedBaseUrl}/?${prebuiltSrcQueryParameters}`;
