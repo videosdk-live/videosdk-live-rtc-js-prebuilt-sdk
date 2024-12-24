@@ -41,7 +41,7 @@ Our prebuilt sdk enables opportunity to integrate real time communication with y
 The easiest way to get started is by just adding our prebuilt script in your website.
 
 ```js
-<script src="https://sdk.videosdk.live/rtc-js-prebuilt/0.3.41/rtc-js-prebuilt.js"></script>
+<script src="https://sdk.videosdk.live/rtc-js-prebuilt/0.3.43/rtc-js-prebuilt.js"></script>
 ```
 
 ### Setting up prebuilt sdk using package manager
