@@ -10,7 +10,7 @@ export class VideoSDKMeeting {
     const prebuiltSrc = await this.generatePrebuiltSrc(
       rest,
       myWindow,
-      myDocument
+      myDocument,
     );
 
     let iframe_id = "videosdk-frame";
@@ -194,7 +194,7 @@ export class VideoSDKMeeting {
       // realtime transcription
       realtimeTranscription,
     } = {},
-    myWindow
+    myWindow,
   ) {
     // START VARIABLE INIT
 
@@ -746,8 +746,7 @@ export class VideoSDKMeeting {
 
     const embedBaseUrl = _embedBaseUrl
       ? _embedBaseUrl
-      : "https://embed.videosdk.live/rtc-js-prebuilt/0.3.43/" 
-
+      : "https://embed.videosdk.live/rtc-js-prebuilt/0.3.44/";
 
     const prebuiltSrc = `${embedBaseUrl}/?${prebuiltSrcQueryParameters}`;
 
