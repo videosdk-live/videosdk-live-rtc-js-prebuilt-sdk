@@ -193,6 +193,9 @@ export class VideoSDKMeeting {
 
       // realtime transcription
       realtimeTranscription,
+
+      // SDK log verbosity: DEBUG | INFO | WARN | ERROR | ALL | NONE
+      verbose,
     } = {},
     myWindow,
   ) {
@@ -303,16 +306,29 @@ export class VideoSDKMeeting {
       resolution: cameraResolution,
       optimizationMode: cameraOptimizationMode,
       multiStream: cameraMultiStream,
+      bitrateMode: cameraBitrateMode,
+      maxLayer: cameraMaxLayer,
+      codec: cameraCodec,
     } = videoConfig;
 
     let {
       resolution: screenShareResolution,
       optimizationMode: screenShareOptimizationMode,
+      withAudio: screenShareWithAudio,
+      multiStream: screenShareMultiStream,
     } = screenShareConfig;
 
     let { lang: language } = i18n;
 
-    let { quality: micQuality } = audioConfig;
+    let {
+      echoCancellation: micEchoCancellation,
+      autoGainControl: micAutoGainControl,
+      noiseSuppression: micNoiseSuppression,
+    } = micNoiseConfig;
+
+    if (!micNoiseConfig) micNoiseConfig = {};
+
+    let { quality: micQuality, noiseConfig: micNoiseConfig } = audioConfig;
 
     let {
       enabled: realtimeTranscriptionEnabled,
@@ -711,6 +727,14 @@ export class VideoSDKMeeting {
               : "false"
             : "true",
       },
+      { key: "cameraBitrateMode", value: cameraBitrateMode || "balanced" },
+      {
+        key: "cameraMaxLayer",
+        value: [2, 3].includes(Number(cameraMaxLayer))
+          ? String(Number(cameraMaxLayer))
+          : "3",
+      },
+      { key: "cameraCodec", value: cameraCodec || "VP8" },
       {
         key: "screenShareResolution",
         value: screenShareResolution || "h720p_15fps",
@@ -719,7 +743,51 @@ export class VideoSDKMeeting {
         key: "screenShareOptimizationMode",
         value: screenShareOptimizationMode || "motion",
       },
+      {
+        key: "screenShareWithAudio",
+        value: screenShareWithAudio === "enable" ? "enable" : "disable",
+      },
+      {
+        key: "screenShareMultiStream",
+        value:
+          typeof screenShareMultiStream === "boolean"
+            ? screenShareMultiStream
+              ? "true"
+              : "false"
+            : "false",
+      },
       { key: "micQuality", value: micQuality || "speech_standard" },
+      {
+        key: "micEchoCancellation",
+        value:
+          typeof micEchoCancellation === "boolean"
+            ? micEchoCancellation
+              ? "true"
+              : "false"
+            : "true",
+      },
+      {
+        key: "micAutoGainControl",
+        value:
+          typeof micAutoGainControl === "boolean"
+            ? micAutoGainControl
+              ? "true"
+              : "false"
+            : "true",
+      },
+      {
+        key: "micNoiseSuppression",
+        value:
+          typeof micNoiseSuppression === "boolean"
+            ? micNoiseSuppression
+              ? "true"
+              : "false"
+            : "true",
+      },
+      {
+        key: "verbose",
+        value: typeof verbose === "string" ? verbose.toUpperCase() : "NONE",
+      },
 
       {
         key: "participantCanToggleRealtimeTranscription",
@@ -746,7 +814,7 @@ export class VideoSDKMeeting {
 
     const embedBaseUrl = _embedBaseUrl
       ? _embedBaseUrl
-      : "https://embed.videosdk.live/rtc-js-prebuilt/0.3.45";
+      : "https://embed.videosdk.live/rtc-js-prebuilt/0.3.46";
 
     const prebuiltSrc = `${embedBaseUrl}/?${prebuiltSrcQueryParameters}`;
 

@@ -4,6 +4,10 @@ export class VideoSDKMeeting {
    * @param name - Name of the participant who will be joining the meeting, this name will be displayed to other participants in the same meeting.
    * ---
    * @param apiKey - ApiKey of Video SDK generated from [app.videosdk.live/api-keys] (https://app.videosdk.live/api-keys)
+   *
+   * - Required if `token` is not provided. When only `apiKey` is passed, the SDK will call `fetchToken()` internally.
+   * ---
+   * @param token - Pre-generated VideoSDK meeting token. Required if `apiKey` is not provided.
    * ---
    * @param meetingId -
    * - Unique Id of the meeting where that participant will be joining.
@@ -14,6 +18,8 @@ export class VideoSDKMeeting {
    * - In the containerId you need to specify an id of your dom element which will help you rendering your meeting in that particular portion which could be your entire page or any element of a page.
    *
    * - If nothing provided, then the meeting will be rendered in full screen.
+   * ---
+   * @param apiBaseUrl - Override the VideoSDK API base URL used by `fetchToken()`. Default `https://api.videosdk.live`.
    * ---
    * @param redirectOnLeave -
    * - You can redirect participant to the specified url after they leave the meeting.
@@ -54,13 +60,17 @@ export class VideoSDKMeeting {
    * ---
    * @param mode -
    *
-   * - There are 2 types of modes:
+   * - Participant mode. Current values:
    *
-   * - **CONFERENCE**: Both audio and video streams will be produced and consumed in this mode.
+   * - **SEND_AND_RECV**: Both audio and video streams will be produced and consumed.
    *
-   * - **VIEWER**: Audio and video streams will not be produced or consumed in this mode.
+   * - **SIGNALLING_ONLY**: No streams will be produced or consumed; participant is signalling-only.
    *
-   * - defaultValue : **CONFERENCE**
+   * - **RECV_ONLY**: Participant only receives streams.
+   *
+   * - Deprecated aliases (still accepted): **CONFERENCE** → SEND_AND_RECV, **VIEWER** → SIGNALLING_ONLY.
+   *
+   * - Default: **SEND_AND_RECV**.
    * ---
    * @param participantId - If you want specify participantId explicitly then you can pass it here.
    * ---
@@ -73,6 +83,28 @@ export class VideoSDKMeeting {
    * @param maintainLandscapeVideoAspectRatio - Participant videos will maintain the aspect ratio if true, so if the video stream is landscape it will be shown as landscape.
    * ---
    * @param notificationSoundEnabled - Wheather you want to hear or mute notification sound during the meeting you can specify here.
+   * ---
+   * @param notificationAlertsEnabled - Toggle in-meeting notification banners (recording, HLS, livestream, etc.). Default `true`.
+   * ---
+   * @param participantNotificationAlertsEnabled - Toggle participant-specific join/leave notification alerts. Default `false`.
+   * ---
+   * @param animationsEnabled - Toggle UI animations (Lottie / transitions). Default `true`.
+   * ---
+   * @param topbarEnabled - Show or hide the meeting top bar. Default `true`.
+   * ---
+   * @param hideLocalParticipant - Hide the local participant tile from the layout. Default `false`.
+   * ---
+   * @param alwaysShowOverlay - Always show the participant overlay (name, mic state) instead of on hover. Default `false`.
+   * ---
+   * @param sideStackSize - Number of tiles visible in the SIDEBAR stack.
+   * ---
+   * @param reduceEdgeSpacing - Reduce outer padding around the meeting layout. Default `false`.
+   * ---
+   * @param meetingLayoutTopic - Pubsub topic used to broadcast layout changes to other participants. e.g. `MEETING_LAYOUT`, `RECORDING_LAYOUT`, `LIVE_STREAM_LAYOUT`, `HLS_LAYOUT`.
+   * ---
+   * @param canChangeLayout - When true the current participant is allowed to change meeting layout for everyone. Default `false`.
+   * ---
+   * @param theme - Meeting UI theme. One of `DEFAULT`, `DARK`, or `LIGHT`. Default `DEFAULT`.
    * ---
    * @param joinScreen - To configure join screen feature, you need to add join screen object in meeting config.
    *
@@ -114,7 +146,7 @@ export class VideoSDKMeeting {
    *
    * @param livestream.enabled - It enables partcipant for live streaming.
    *
-   * @param livestream.autostart - It automatically start live streaming if set to true when meeting gets started.
+   * @param livestream.autoStart - It automatically start live streaming if set to true when meeting gets started.
    *
    * @param livestream.theme - You can specify theme of live streaming which can be DARK , LIGHT or DEFAULT.
    *
@@ -132,7 +164,7 @@ export class VideoSDKMeeting {
    *
    * @param recording.awsDirPath - You can specify the path where recording will get stored.
    *
-   * @param recording.autostart - If set to true as the meeting start, recording will start automatically.
+   * @param recording.autoStart - If set to true as the meeting start, recording will start automatically.
    *
    * @param recording.theme - It represents the theme of recording which can be DARK , LIGHT or DEFAULT.
    * ---
@@ -153,11 +185,13 @@ export class VideoSDKMeeting {
    * ---
    * @param waitingScreen - You can customize waiting screen.
    *
-   * @param waitingScreen.imageURL - You can pass url of your lottie or image, to be shown on the waiting screen.
+   * @param waitingScreen.imageUrl - You can pass url of your lottie or image, to be shown on the waiting screen.
    *
    * @param waitingScreen.text - You can write your customize message, that will be shown on the waiting screen.
    * ---
    * @param videoConfig - You can customize video by pass resolution, optimization mode for associated video configuration.
+   *
+   * @param videoConfig.cameraId - Device id of the camera to use when acquiring the local video track.
    *
    * @param videoConfig.resolution - It represents the resolution of your video.
    *
@@ -167,12 +201,32 @@ export class VideoSDKMeeting {
    * @param videoConfig.optimizationMode - It represents the specific mode of your video which can be motion , text or detail.
    *
    * @param videoConfig.multiStream - If it is true, multiple resolution layers are send in single video stream. If it is false, then only single resolution layer is send in video stream.
+   *
+   * @param videoConfig.bitrateMode - Camera stream bitrate strategy. One of `balanced`, `high_quality`, `bandwidth_optimized`.
+   *
+   * - Default: `balanced`.
+   *
+   * @param videoConfig.maxLayer - Maximum number of simulcast layers to publish. Allowed values are `2` or `3`.
+   *
+   * - Default: `3`.
+   *
+   * @param videoConfig.codec - Video codec used for the camera stream. One of `VP8`, `VP9`, `AV1`, `H264`.
+   *
+   * - Default: `VP8`.
    * ---
    * @param audioConfig - You can customize audio by setting qulaity of audio.
    *
    * @param audioConfig.quality - audioConfig.quality- You can set quality value to speech_low_quality , speech_standard or high_quality.
    *
    * - By default quality is set to speech_standard. If you want to know more values of quality then checkout this [Prebuilt SDK Referenece] (https://docs.videosdk.live/prebuilt/api/sdk-reference/parameters/advance-parameters/customize-audio-video#quality).
+   *
+   * @param audioConfig.noiseConfig - Fine-grained microphone processing flags applied when acquiring the local audio track.
+   *
+   * @param audioConfig.noiseConfig.echoCancellation - Enable browser echo cancellation. Default `true`.
+   *
+   * @param audioConfig.noiseConfig.autoGainControl - Enable browser auto gain control. Default `true`.
+   *
+   * @param audioConfig.noiseConfig.noiseSuppression - Enable browser noise suppression. Default `true`.
    * ---
    * @param screenShareConfig - You can customize screen share by pass resolution, optimization mode for associated screen sharing configuration.
    *
@@ -181,6 +235,16 @@ export class VideoSDKMeeting {
    * - Which can be h360p_30fps, h720p_5fps, h720p_15fps, h1080p_15fps, h1080p_30fps.
    *
    * @param screenShareConfig.optimizationMode -  You can specify mode of your screen shared video which can be motion , text or detail.
+   *
+   * @param screenShareConfig.withAudio - Capture system/tab audio along with the screen share. One of `enable` or `disable`.
+   *
+   * - Default: `disable`.
+   *
+   * @param screenShareConfig.multiStream - If true, publishes multi-layer screen share stream. Default `false`.
+   * ---
+   * @param verbose - SDK log verbosity. One of `DEBUG`, `INFO`, `WARN`, `ERROR`, `ALL`, `NONE`.
+   *
+   * - Default: `NONE`.
    * ---
    * @param permissions - You can pass meeting join , webcam and mic permission for participants , poll , whiteboard etc.
    *
@@ -212,15 +276,13 @@ export class VideoSDKMeeting {
    *
    * @param permissions.toggleVirtualBackground - It enables participant to see virtual background option if set to true.
    *
-   * @param permissions.toggleRecording - It eenables participant to change the layout of a meeting when set to truenables participant to toggle recording if set to true.
+   * @param permissions.toggleRecording - It enables participant to toggle recording if set to true.
    *
    * @param permissions.toggleLivestream - It enables participant to toggle live streaming if set to true.
    *
    * @param permissions.changeLayout - It enables participant to change the layout of a meeting when set to true.
    *
-   * @param permissions.toggleParticipantMode - It represents whether participant can toggle other participant's mode or not.
-   *
-   * @param permissions.toggleHLS - If set to true you can toggle Start HLS Button.
+   * @param permissions.toggleHls - If set to true you can toggle Start HLS Button.
    *
    * @param permissions.toggleRealtimeTranscription - enables participant to toggle realtime transcription if set to true
    * ---
@@ -228,9 +290,11 @@ export class VideoSDKMeeting {
    */
   init(config: {
     name: string;
-    apiKey: string;
+    apiKey?: string;
+    token?: string;
     meetingId: string;
     containerId?: string;
+    apiBaseUrl?: string;
     redirectOnLeave?: string;
     micEnabled?: boolean;
     webcamEnabled?: boolean;
@@ -238,25 +302,46 @@ export class VideoSDKMeeting {
     participantCanToggleSelfMic?: boolean;
     participantCanLeave?: boolean;
     chatEnabled?: boolean;
-    screenShareEnabled?: string;
+    screenShareEnabled?: boolean;
     whiteboardEnabled?: boolean;
     raiseHandEnabled?: boolean;
     pollEnabled?: boolean;
     moreOptionsEnabled?: boolean;
     networkBarEnabled?: boolean;
     participantTabPanelEnabled?: boolean;
-    maxResolution?: string;
+    maxResolution?: "hd" | "sd";
     debug?: boolean;
-    mode?: string;
+    mode?:
+      | "SEND_AND_RECV"
+      | "SIGNALLING_ONLY"
+      | "RECV_ONLY"
+      | "CONFERENCE"
+      | "VIEWER";
     participantId?: string;
     joinWithoutUserInteraction?: boolean;
     maintainVideoAspectRatio?: boolean;
     maintainLandscapeVideoAspectRatio?: boolean;
     notificationSoundEnabled?: boolean;
+    notificationAlertsEnabled?: boolean;
+    participantNotificationAlertsEnabled?: boolean;
+    animationsEnabled?: boolean;
+    topbarEnabled?: boolean;
+    hideLocalParticipant?: boolean;
+    alwaysShowOverlay?: boolean;
+    sideStackSize?: number | string;
+    reduceEdgeSpacing?: boolean;
+    meetingLayoutTopic?: string;
+    canChangeLayout?: boolean;
+    theme?: "DEFAULT" | "DARK" | "LIGHT";
     joinScreen?: {
       visible: boolean;
       title: string;
       meetingUrl: string;
+    };
+    layout?: {
+      type?: "SPOTLIGHT" | "SIDEBAR" | "GRID";
+      priority?: "SPEAKER" | "PIN";
+      gridSize?: number;
     };
     branding?: {
       enabled: boolean;
@@ -266,13 +351,13 @@ export class VideoSDKMeeting {
     };
     hls?: {
       enabled: boolean;
-      autostart: boolean;
+      autoStart: boolean;
       playerControlsVisible: boolean;
       theme: string;
     };
     livestream?: {
       enabled: boolean;
-      autostart: boolean;
+      autoStart: boolean;
       theme: string;
       outputs: [
         {
@@ -283,12 +368,12 @@ export class VideoSDKMeeting {
     };
     recording?: {
       enabled: boolean;
-      autostart: boolean;
+      autoStart: boolean;
       webhookUrl: string;
       awsDirPath: string;
       theme: string;
     };
-    realtimeTranscription: {
+    realtimeTranscription?: {
       enabled: boolean;
       visible: boolean;
     };
@@ -300,26 +385,38 @@ export class VideoSDKMeeting {
       rejoinButtonEnabled: boolean;
     };
     waitingScreen?: {
-      imageURL: string;
+      imageUrl: string;
       text: string;
     };
     videoConfig?: {
-      resolution: string;
-      optimizationMode: string;
-      multiStream: boolean;
+      cameraId?: string;
+      resolution?: string;
+      optimizationMode?: "motion" | "text" | "detail";
+      multiStream?: boolean;
+      bitrateMode?: "balanced" | "high_quality" | "bandwidth_optimized";
+      maxLayer?: 2 | 3;
+      codec?: "VP8" | "VP9" | "AV1" | "H264";
     };
     audioConfig?: {
-      quality: string;
+      quality?: "speech_low_quality" | "speech_standard" | "high_quality";
+      noiseConfig?: {
+        echoCancellation?: boolean;
+        autoGainControl?: boolean;
+        noiseSuppression?: boolean;
+      };
     };
     screenShareConfig?: {
-      resolution: string;
-      optimizationMode: string;
+      resolution?: string;
+      optimizationMode?: "motion" | "text" | "detail";
+      withAudio?: "enable" | "disable";
+      multiStream?: boolean;
     };
+    verbose?: "DEBUG" | "INFO" | "WARN" | "ERROR" | "ALL" | "NONE";
     permissions?: {
       pin: boolean;
       askToJoin: boolean;
       toggleParticipantWebcam: boolean;
-      toggleHLS: boolean;
+      toggleHls: boolean;
       toggleParticipantMic: boolean;
       toggleParticipantMode: boolean;
       toggleParticipantScreenshare: boolean;
