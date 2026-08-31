@@ -320,15 +320,15 @@ export class VideoSDKMeeting {
 
     let { lang: language } = i18n;
 
+    let { quality: micQuality, noiseConfig: micNoiseConfig } = audioConfig;
+
+    if (!micNoiseConfig) micNoiseConfig = {};
+
     let {
       echoCancellation: micEchoCancellation,
       autoGainControl: micAutoGainControl,
       noiseSuppression: micNoiseSuppression,
     } = micNoiseConfig;
-
-    if (!micNoiseConfig) micNoiseConfig = {};
-
-    let { quality: micQuality, noiseConfig: micNoiseConfig } = audioConfig;
 
     let {
       enabled: realtimeTranscriptionEnabled,
